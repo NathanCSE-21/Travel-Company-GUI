@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
@@ -34,7 +35,7 @@ public class MainMenu extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainMenu() {
+	public MainMenu() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 479, 433);
 		contentPane = new JPanel();
@@ -93,7 +94,15 @@ public class MainMenu extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdbtnNewRadioButton.isSelected()) {
-					JOptionPane.showMessageDialog(null, "Create Profile");
+					dispose();
+					CreateProfile profile = null;
+					try {
+						profile = new CreateProfile();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					profile.setVisible(true);
 				}
 				else if(rdbtnNewRadioButton_1.isSelected()) {
 					JOptionPane.showMessageDialog(null, "Delete Profile");

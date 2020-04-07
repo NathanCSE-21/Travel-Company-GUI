@@ -6,12 +6,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.io.Serializable;
 
 public class CreateProfile extends JFrame {
 
@@ -46,7 +53,7 @@ public class CreateProfile extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CreateProfile() {
+	public CreateProfile() throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 540, 706);
 		contentPane = new JPanel();
@@ -310,8 +317,104 @@ public class CreateProfile extends JFrame {
 		warningLabel_8_3.setVisible(false);
 		
 		JButton submitButton = new JButton("Submit");
+		submitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String agentID = IDtext.getText();
+				String filename = "agent"+agentID;
+				String firstName = firstNameText.getText();
+				String lastName = lastNameTxt.getText();
+				String address = addressTxt.getText();
+				String phone = PhoneTxt.getText();
+				Float tripCost = Float.parseFloat(tripCostTxt.getText());
+				String travelType = travelTypeBox.getSelectedItem().toString();
+				String paymentType = paymentTypeBox.getSelectedItem().toString();
+				String MdOption = mdOptionBox.getSelectedItem().toString();
+				
+				String MdContact = "None";
+				String MdPhone = "None";
+				String illness = "None";
+				String allergy = "None";
+				
+				switch(MdOption) {
+				case "Yes":
+					MdContact = MdContactField.getText();
+					MdPhone = MdPhoneField.getText();
+					illness = illnessField.getText();
+					allergy = textField.getText();
+					break;
+				case "No":
+					break;
+				}
+				
+				
+				ArrayList <NewProfile> newprofile = new ArrayList <>();
+				newprofile.add(new NewProfile(agentID, firstName, lastName, address, phone, tripCost, travelType, paymentType, MdContact, MdPhone
+						, illness, allergy));
+				
+				try
+		        {
+		            FileOutputStream fos = new FileOutputStream(filename);
+		            ObjectOutputStream oos = new ObjectOutputStream(fos);
+		            oos.writeObject(newprofile);
+		            oos.close();
+		            fos.close();
+		        } 
+		        catch (IOException ioe) 
+		        {
+		            ioe.printStackTrace();
+		        }
+				
+				
+			}
+		});
 		submitButton.setForeground(new Color(0, 0, 0));
 		submitButton.setBounds(274, 555, 143, 51);
 		contentPane.add(submitButton);
 	}
+	
+	public class NewProfile implements Serializable{
+		String ID;
+		String firstName;
+		String lastName;
+		String address;
+		String phone;
+		Float tripCost;
+		String travelType;
+		String paymentType;
+		String mdContact;
+		String mdPhone;
+		String illness;
+		String allergy;
+		
+		
+		public NewProfile(String ID, String firstName,String lastName, String address,String phone,Float tripCost, String travelType
+				, String paymentType, String mdContact, String mdPhone, String illness, String allergy) {
+			super();
+			
+			this.ID = ID;
+			this.firstName= firstName;
+			this.lastName = lastName;
+			this.address = address;
+			this.phone = phone;
+			this.tripCost = tripCost;
+			this.travelType = travelType;
+			this.paymentType = paymentType;
+			this.mdContact = mdContact;
+			this.mdPhone = mdPhone;
+			this.illness = illness;
+			this.allergy = allergy;
+			
+		}
+		
+		@Override
+	    public String toString() {
+	        return "Profile [AgentID: " + ID + ", firstName: " + firstName + ", lastName: " + lastName +
+	        		", address: " + address + ", phone: " + phone + ", tripCost: " + tripCost + ", travelType: " + travelType
+	        		+ ", paymentType: " + paymentType + ", mdContact: " + mdContact + ", mdPhone: " + mdPhone
+	        		+ ", illness: " +illness + ", allergy: " + allergy +"]";
+	    }
+		
+
+	}
+
 }
