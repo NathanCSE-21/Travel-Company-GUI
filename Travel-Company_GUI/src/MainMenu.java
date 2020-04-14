@@ -94,7 +94,8 @@ public class MainMenu extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdbtnNewRadioButton.isSelected()) {
-					dispose();
+					// Create Profile
+					//dispose();
 					CreateProfile profile = null;
 					try {
 						profile = new CreateProfile();
@@ -114,7 +115,17 @@ public class MainMenu extends JFrame {
 					JOptionPane.showMessageDialog(null, "Find/Display Profile");
 				}
 				else if(rdbtnNewRadioButton_4.isSelected()) {
-					JOptionPane.showMessageDialog(null, "Display All Profiles");
+					//JOptionPane.showMessageDialog(null, "Display All Profiles");
+					//dispose();
+					DisplayProfiles profiles = null;
+					try {
+						profiles = new DisplayProfiles();
+					
+					}
+					catch(Exception e1) {
+						e1.printStackTrace();
+					}
+					profiles.setVisible(true);
 				}
 				
 			}

@@ -14,8 +14,12 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -162,42 +166,6 @@ public class CreateProfile extends JFrame {
 		lblNewLabel_8.setBounds(171, 334, 106, 19);
 		contentPane.add(lblNewLabel_8);
 		
-		JLabel warningLabel = new JLabel("*");
-		warningLabel.setForeground(new Color(255, 0, 0));
-		warningLabel.setBounds(402, 76, 56, 16);
-		contentPane.add(warningLabel);
-		warningLabel.setVisible(false);
-		
-		JLabel warningLabel_1 = new JLabel("*");
-		warningLabel_1.setForeground(Color.RED);
-		warningLabel_1.setBounds(402, 111, 56, 16);
-		contentPane.add(warningLabel_1);
-		warningLabel_1.setVisible(false);
-		
-		JLabel warningLabel_2 = new JLabel("*");
-		warningLabel_2.setForeground(Color.RED);
-		warningLabel_2.setBounds(402, 149, 56, 16);
-		contentPane.add(warningLabel_2);
-		warningLabel_2.setVisible(false);
-		
-		JLabel warningLabel_3 = new JLabel("*");
-		warningLabel_3.setForeground(Color.RED);
-		warningLabel_3.setBounds(402, 184, 56, 16);
-		contentPane.add(warningLabel_3);
-		warningLabel_3.setVisible(false);
-		
-		JLabel warningLabel_4 = new JLabel("*");
-		warningLabel_4.setForeground(Color.RED);
-		warningLabel_4.setBounds(402, 219, 56, 16);
-		contentPane.add(warningLabel_4);
-		warningLabel_4.setVisible(false);
-		
-		JLabel warningLabel_5 = new JLabel("*");
-		warningLabel_5.setForeground(Color.RED);
-		warningLabel_5.setBounds(402, 254, 56, 16);
-		contentPane.add(warningLabel_5);
-		warningLabel_5.setVisible(false);
-		
 		
 		MdContactField = new JTextField();
 		MdContactField.setColumns(10);
@@ -288,34 +256,6 @@ public class CreateProfile extends JFrame {
 		mdOptionBox.setBounds(429, 368, 47, 22);
 		contentPane.add(mdOptionBox);
 		
-
-		
-		
-		
-		JLabel warningLabel_8 = new JLabel("*");
-		warningLabel_8.setForeground(Color.RED);
-		warningLabel_8.setBounds(402, 404, 56, 16);
-		contentPane.add(warningLabel_8);
-		warningLabel_8.setVisible(false);
-		
-		JLabel warningLabel_8_1 = new JLabel("*");
-		warningLabel_8_1.setForeground(Color.RED);
-		warningLabel_8_1.setBounds(402, 439, 56, 16);
-		contentPane.add(warningLabel_8_1);
-		warningLabel_8_1.setVisible(false);
-		
-		JLabel warningLabel_8_2 = new JLabel("*");
-		warningLabel_8_2.setForeground(Color.RED);
-		warningLabel_8_2.setBounds(402, 473, 56, 16);
-		contentPane.add(warningLabel_8_2);
-		warningLabel_8_2.setVisible(false);
-		
-		JLabel warningLabel_8_3 = new JLabel("*");
-		warningLabel_8_3.setForeground(Color.RED);
-		warningLabel_8_3.setBounds(402, 508, 56, 16);
-		contentPane.add(warningLabel_8_3);
-		warningLabel_8_3.setVisible(false);
-		
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -348,73 +288,71 @@ public class CreateProfile extends JFrame {
 				
 				
 				ArrayList <NewProfile> newprofile = new ArrayList <>();
-				newprofile.add(new NewProfile(agentID, firstName, lastName, address, phone, tripCost, travelType, paymentType, MdContact, MdPhone
-						, illness, allergy));
+				
+				// Load object from existing file.
+				try {
+					// File exists
+					FileInputStream fis = new FileInputStream(filename);
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					
+					newprofile = (ArrayList<NewProfile>) ois.readObject();
+					
+					ois.close();
+					fis.close();
+				}
+				catch(IOException ioe) {
+					// File does not exists
+					
+					
+					
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				// Add the profile into object.
+				NewProfile prof = new NewProfile(agentID, 
+						firstName, 
+						lastName, 
+						address, 
+						phone, 
+						tripCost, 
+						travelType, 
+						paymentType, 
+						MdContact, 
+						MdPhone, 
+						illness, 
+						allergy);
+				newprofile.add(prof);
 				
 				try
 		        {
+					// add to file
 		            FileOutputStream fos = new FileOutputStream(filename);
 		            ObjectOutputStream oos = new ObjectOutputStream(fos);
 		            oos.writeObject(newprofile);
+		            
+		            oos.flush();
 		            oos.close();
 		            fos.close();
+		            
 		        } 
 		        catch (IOException ioe) 
 		        {
-		            ioe.printStackTrace();
+		        	// fail to add to file
+		            //ioe.printStackTrace();
+		        	System.out.println("Create Profile Failed!");
 		        }
 				
+				for(NewProfile pro: newprofile) {
+					System.out.println(pro);
+				}
 				
 			}
 		});
 		submitButton.setForeground(new Color(0, 0, 0));
 		submitButton.setBounds(274, 555, 143, 51);
 		contentPane.add(submitButton);
-	}
-	
-	public class NewProfile implements Serializable{
-		String ID;
-		String firstName;
-		String lastName;
-		String address;
-		String phone;
-		Float tripCost;
-		String travelType;
-		String paymentType;
-		String mdContact;
-		String mdPhone;
-		String illness;
-		String allergy;
-		
-		
-		public NewProfile(String ID, String firstName,String lastName, String address,String phone,Float tripCost, String travelType
-				, String paymentType, String mdContact, String mdPhone, String illness, String allergy) {
-			super();
-			
-			this.ID = ID;
-			this.firstName= firstName;
-			this.lastName = lastName;
-			this.address = address;
-			this.phone = phone;
-			this.tripCost = tripCost;
-			this.travelType = travelType;
-			this.paymentType = paymentType;
-			this.mdContact = mdContact;
-			this.mdPhone = mdPhone;
-			this.illness = illness;
-			this.allergy = allergy;
-			
-		}
-		
-		@Override
-	    public String toString() {
-	        return "Profile [AgentID: " + ID + ", firstName: " + firstName + ", lastName: " + lastName +
-	        		", address: " + address + ", phone: " + phone + ", tripCost: " + tripCost + ", travelType: " + travelType
-	        		+ ", paymentType: " + paymentType + ", mdContact: " + mdContact + ", mdPhone: " + mdPhone
-	        		+ ", illness: " +illness + ", allergy: " + allergy +"]";
-	    }
-		
-
 	}
 
 }
