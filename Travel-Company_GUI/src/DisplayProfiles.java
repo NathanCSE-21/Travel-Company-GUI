@@ -110,10 +110,15 @@ public class DisplayProfiles extends JFrame {
 					e1.printStackTrace();
 				}
 				
-				for(NewProfile profile: newprofile) {
-					System.out.println(profile);
-				}
+				//int total =0;
+				//int idx=0;
+				//for(NewProfile profile: newprofile) {
+				//	System.out.println(profile);
+				//}
 				
+				DisplayProfilesDesign design = new DisplayProfilesDesign(newprofile);
+				dispose();
+				design.setVisible(true);
 				
 			}
 		});
