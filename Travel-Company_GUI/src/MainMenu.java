@@ -112,7 +112,8 @@ public class MainMenu extends JFrame {
 					JOptionPane.showMessageDialog(null, "Update Profile");
 				}
 				else if(rdbtnNewRadioButton_3.isSelected()) {
-					JOptionPane.showMessageDialog(null, "Find/Display Profile");
+					FindProfile profile = new FindProfile();
+					profile.setVisible(true);
 				}
 				else if(rdbtnNewRadioButton_4.isSelected()) {
 					//JOptionPane.showMessageDialog(null, "Display All Profiles");

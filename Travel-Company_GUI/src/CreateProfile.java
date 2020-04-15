@@ -344,9 +344,6 @@ public class CreateProfile extends JFrame {
 		        	System.out.println("Create Profile Failed!");
 		        }
 				
-				for(NewProfile pro: newprofile) {
-					System.out.println(pro);
-				}
 				
 			}
 		});

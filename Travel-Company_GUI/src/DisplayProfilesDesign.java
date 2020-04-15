@@ -10,6 +10,9 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DisplayProfilesDesign extends JFrame {
 
@@ -70,6 +73,10 @@ public class DisplayProfilesDesign extends JFrame {
 	private JTextField illnesstextField_5;
 	private JTextField allergytextField_5;
 	private JTextField boxtextField;
+	private int idx = 1;
+	private double total = 0;
+	private double pages = 0;
+	private double current_page = 1;
 
 	/**
 	 * Launch the application.
@@ -557,11 +564,11 @@ public class DisplayProfilesDesign extends JFrame {
 		contentPane.add(allergytextField_5);
 		
 		boxtextField = new JTextField();
-		boxtextField.setEnabled(false);
 		boxtextField.setEditable(false);
 		boxtextField.setBounds(462, 378, 49, 22);
 		contentPane.add(boxtextField);
 		boxtextField.setColumns(10);
+		
 		
 		JLabel lblNewLabel_1 = new JLabel("of");
 		lblNewLabel_1.setForeground(Color.WHITE);
@@ -570,108 +577,277 @@ public class DisplayProfilesDesign extends JFrame {
 		
 		JLabel maxLabel = new JLabel("");
 		maxLabel.setForeground(Color.WHITE);
-		maxLabel.setBounds(550, 378, 56, 16);
+		maxLabel.setBounds(545, 381, 44, 16);
 		contentPane.add(maxLabel);
 		
-		int idx = 1;
-		int total = 0;
-		int pages = 0;
+		JButton btNext = new JButton("NEXT");
+		
+		btNext.setBounds(601, 377, 97, 25);
+		contentPane.add(btNext);
+		//btNext.setVisible(false);
+		
+		//int idx = 1;
+		//double total = 0;
+		//double pages = 0;
 		
 		// Count the total profile in the object
 		for(NewProfile prof:newprofile) {
 			total++;
 		}
-		if(total > 25) {
-			pages= 6;
-		}
-		else if(total >20) {
-			pages = 5;
-		}
-		else if (total > 15) {
-			pages = 4;
-		}
-		else if(total >10) {
-			pages = 3;
-		}
-		else if(total > 5) {
-			pages = 2; 
-		}
-		for(NewProfile prof: newprofile) {
-			switch(idx) {
-			case 1:
-				agenttextField_1.setText(prof.ID);
-				firsttextField_1.setText(prof.firstName);
-				lasttextField_1.setText(prof.lastName);
-				addresstextField_1.setText(prof.address);
-				phonetextField_1.setText(prof.phone);
-				travelTextField_1.setText(prof.travelType);
-				paymentTextField_1.setText(prof.paymentType);
-				contactTextField_1.setText(prof.mdContact);
-				mdphonetextField_1.setText(prof.mdPhone);
-				illnesstextField_1.setText(prof.illness);;
-				allergytextField_1.setText(prof.allergy);;
-				break;
-				
-			case 2:
-				agenttextField_2.setText(prof.ID);
-				firsttextField_2.setText(prof.firstName);
-				lasttextField_2.setText(prof.lastName);
-				addresstextField_2.setText(prof.address);
-				phonetextField_2.setText(prof.phone);
-				traveltextField_2.setText(prof.travelType);
-				paymenttextField_2.setText(prof.paymentType);
-				mdcontacttextField_2.setText(prof.mdContact);
-				mdphonetextField_2.setText(prof.mdPhone);
-				illnesstextField_2.setText(prof.illness);
-				allergytextField_2.setText(prof.allergy);
-				break;
-				
-			case 3:
-				agenttextField_3.setText(prof.ID);
-				firsttextField_3.setText(prof.firstName);
-				lasttextField_3.setText(prof.lastName);
-				addresstextField_3.setText(prof.address);
-				phonetextField_3.setText(prof.phone);
-				traveltextField_3.setText(prof.travelType);
-				paymenttextField_3.setText(prof.paymentType);
-				mdcontacttextField_3.setText(prof.mdContact);
-				mdphonetextField_3.setText(prof.mdPhone);
-				illnesstextField_3.setText(prof.illness);
-				allergytextField_3.setText(prof.allergy);
-				break;
-				
-			case 4:
-				agenttextField_4.setText(prof.ID);
-				firsttextField_4.setText(prof.firstName);
-				lasttextField_4.setText(prof.lastName);
-				addresstextField_4.setText(prof.address);
-				phonetextField_4.setText(prof.phone);
-				traveltextField_4.setText(prof.travelType);
-				paymenttextField_4.setText(prof.paymentType);
-				mdcontacttextField_4.setText(prof.mdContact);
-				mdphonetextField_4.setText(prof.mdPhone);
-				illnesstextField_4.setText(prof.illness);
-				allergytextField_4.setText(prof.allergy);
-				break;
-				
-			case 5:
-				agenttextField_5.setText(prof.ID);
-				firsttextField_5.setText(prof.firstName);
-				lasttextField_5.setText(prof.lastName);
-				addresstextField_5.setText(prof.address);
-				phonetextField_5.setText(prof.phone);
-				traveltextField_5.setText(prof.travelType);
-				paymenttextField_5.setText(prof.paymentType);
-				mdcontacttextField_5.setText(prof.mdContact);
-				mdphonetextField_5.setText(prof.mdPhone);
-				illnesstextField_5.setText(prof.illness);
-				allergytextField_5.setText(prof.allergy);
-				break;
-			
+		
+		// Calculate how many pages we need.
+		pages = Math.ceil(total/5);
+		
+		
+		
+			if(current_page < pages) {
+				btNext.setVisible(true);
+			}
+			else {
+				btNext.setVisible(false);
 			}
 			
-			idx++;
-		}
+			boxtextField.setText(Double.toString(current_page));
+			maxLabel.setText(Double.toString(pages));
+			
+			btNext.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					idx = 1;
+					current_page++;
+					
+					if(current_page < pages) {
+						btNext.setVisible(true);
+					}
+					else {
+						btNext.setVisible(false);
+					}
+					
+					boxtextField.setText(Double.toString(current_page));
+					
+					// Set everything to empty.
+					agenttextField_1.setText("");
+					firsttextField_1.setText("");
+					lasttextField_1.setText("");
+					addresstextField_1.setText("");
+					phonetextField_1.setText("");
+					travelTextField_1.setText("");
+					paymentTextField_1.setText("");
+					contactTextField_1.setText("");
+					mdphonetextField_1.setText("");
+					illnesstextField_1.setText("");
+					allergytextField_1.setText("");
+					
+					agenttextField_2.setText("");
+					firsttextField_2.setText("");
+					lasttextField_2.setText("");
+					addresstextField_2.setText("");
+					phonetextField_2.setText("");
+					traveltextField_2.setText("");
+					paymenttextField_2.setText("");
+					mdcontacttextField_2.setText("");
+					mdphonetextField_2.setText("");
+					illnesstextField_2.setText("");
+					allergytextField_2.setText("");
+					
+					agenttextField_3.setText("");
+					firsttextField_3.setText("");
+					lasttextField_3.setText("");
+					addresstextField_3.setText("");
+					phonetextField_3.setText("");
+					traveltextField_3.setText("");
+					paymenttextField_3.setText("");
+					mdcontacttextField_3.setText("");
+					mdphonetextField_3.setText("");
+					illnesstextField_3.setText("");
+					allergytextField_3.setText("");
+					
+					agenttextField_4.setText("");
+					firsttextField_4.setText("");
+					lasttextField_4.setText("");
+					addresstextField_4.setText("");
+					phonetextField_4.setText("");
+					traveltextField_4.setText("");
+					paymenttextField_4.setText("");
+					mdcontacttextField_4.setText("");
+					mdphonetextField_4.setText("");
+					illnesstextField_4.setText("");
+					allergytextField_4.setText("");
+					
+					agenttextField_5.setText("");
+					firsttextField_5.setText("");
+					lasttextField_5.setText("");
+					addresstextField_5.setText("");
+					phonetextField_5.setText("");
+					traveltextField_5.setText("");
+					paymenttextField_5.setText("");
+					mdcontacttextField_5.setText("");
+					mdphonetextField_5.setText("");
+					illnesstextField_5.setText("");
+					allergytextField_5.setText("");
+					
+					int temp = 1;
+					for(NewProfile prof: newprofile) {
+						if(temp > 5) {
+							switch(idx) {
+							case 1:
+								agenttextField_1.setText(prof.ID);
+								firsttextField_1.setText(prof.firstName);
+								lasttextField_1.setText(prof.lastName);
+								addresstextField_1.setText(prof.address);
+								phonetextField_1.setText(prof.phone);
+								travelTextField_1.setText(prof.travelType);
+								paymentTextField_1.setText(prof.paymentType);
+								contactTextField_1.setText(prof.mdContact);
+								mdphonetextField_1.setText(prof.mdPhone);
+								illnesstextField_1.setText(prof.illness);;
+								allergytextField_1.setText(prof.allergy);;
+								break;
+								
+							case 2:
+								agenttextField_2.setText(prof.ID);
+								firsttextField_2.setText(prof.firstName);
+								lasttextField_2.setText(prof.lastName);
+								addresstextField_2.setText(prof.address);
+								phonetextField_2.setText(prof.phone);
+								traveltextField_2.setText(prof.travelType);
+								paymenttextField_2.setText(prof.paymentType);
+								mdcontacttextField_2.setText(prof.mdContact);
+								mdphonetextField_2.setText(prof.mdPhone);
+								illnesstextField_2.setText(prof.illness);
+								allergytextField_2.setText(prof.allergy);
+								break;
+								
+							case 3:
+								agenttextField_3.setText(prof.ID);
+								firsttextField_3.setText(prof.firstName);
+								lasttextField_3.setText(prof.lastName);
+								addresstextField_3.setText(prof.address);
+								phonetextField_3.setText(prof.phone);
+								traveltextField_3.setText(prof.travelType);
+								paymenttextField_3.setText(prof.paymentType);
+								mdcontacttextField_3.setText(prof.mdContact);
+								mdphonetextField_3.setText(prof.mdPhone);
+								illnesstextField_3.setText(prof.illness);
+								allergytextField_3.setText(prof.allergy);
+								break;
+								
+							case 4:
+								agenttextField_4.setText(prof.ID);
+								firsttextField_4.setText(prof.firstName);
+								lasttextField_4.setText(prof.lastName);
+								addresstextField_4.setText(prof.address);
+								phonetextField_4.setText(prof.phone);
+								traveltextField_4.setText(prof.travelType);
+								paymenttextField_4.setText(prof.paymentType);
+								mdcontacttextField_4.setText(prof.mdContact);
+								mdphonetextField_4.setText(prof.mdPhone);
+								illnesstextField_4.setText(prof.illness);
+								allergytextField_4.setText(prof.allergy);
+								break;
+								
+							case 5:
+								agenttextField_5.setText(prof.ID);
+								firsttextField_5.setText(prof.firstName);
+								lasttextField_5.setText(prof.lastName);
+								addresstextField_5.setText(prof.address);
+								phonetextField_5.setText(prof.phone);
+								traveltextField_5.setText(prof.travelType);
+								paymenttextField_5.setText(prof.paymentType);
+								mdcontacttextField_5.setText(prof.mdContact);
+								mdphonetextField_5.setText(prof.mdPhone);
+								illnesstextField_5.setText(prof.illness);
+								allergytextField_5.setText(prof.allergy);
+								break;
+							
+							}
+							
+							idx++;
+						}
+						
+						temp++;
+					}
+				}
+			});
+			
+			for(NewProfile prof: newprofile) {
+				switch(idx) {
+				case 1:
+					agenttextField_1.setText(prof.ID);
+					firsttextField_1.setText(prof.firstName);
+					lasttextField_1.setText(prof.lastName);
+					addresstextField_1.setText(prof.address);
+					phonetextField_1.setText(prof.phone);
+					travelTextField_1.setText(prof.travelType);
+					paymentTextField_1.setText(prof.paymentType);
+					contactTextField_1.setText(prof.mdContact);
+					mdphonetextField_1.setText(prof.mdPhone);
+					illnesstextField_1.setText(prof.illness);;
+					allergytextField_1.setText(prof.allergy);;
+					break;
+					
+				case 2:
+					agenttextField_2.setText(prof.ID);
+					firsttextField_2.setText(prof.firstName);
+					lasttextField_2.setText(prof.lastName);
+					addresstextField_2.setText(prof.address);
+					phonetextField_2.setText(prof.phone);
+					traveltextField_2.setText(prof.travelType);
+					paymenttextField_2.setText(prof.paymentType);
+					mdcontacttextField_2.setText(prof.mdContact);
+					mdphonetextField_2.setText(prof.mdPhone);
+					illnesstextField_2.setText(prof.illness);
+					allergytextField_2.setText(prof.allergy);
+					break;
+					
+				case 3:
+					agenttextField_3.setText(prof.ID);
+					firsttextField_3.setText(prof.firstName);
+					lasttextField_3.setText(prof.lastName);
+					addresstextField_3.setText(prof.address);
+					phonetextField_3.setText(prof.phone);
+					traveltextField_3.setText(prof.travelType);
+					paymenttextField_3.setText(prof.paymentType);
+					mdcontacttextField_3.setText(prof.mdContact);
+					mdphonetextField_3.setText(prof.mdPhone);
+					illnesstextField_3.setText(prof.illness);
+					allergytextField_3.setText(prof.allergy);
+					break;
+					
+				case 4:
+					agenttextField_4.setText(prof.ID);
+					firsttextField_4.setText(prof.firstName);
+					lasttextField_4.setText(prof.lastName);
+					addresstextField_4.setText(prof.address);
+					phonetextField_4.setText(prof.phone);
+					traveltextField_4.setText(prof.travelType);
+					paymenttextField_4.setText(prof.paymentType);
+					mdcontacttextField_4.setText(prof.mdContact);
+					mdphonetextField_4.setText(prof.mdPhone);
+					illnesstextField_4.setText(prof.illness);
+					allergytextField_4.setText(prof.allergy);
+					break;
+					
+				case 5:
+					agenttextField_5.setText(prof.ID);
+					firsttextField_5.setText(prof.firstName);
+					lasttextField_5.setText(prof.lastName);
+					addresstextField_5.setText(prof.address);
+					phonetextField_5.setText(prof.phone);
+					traveltextField_5.setText(prof.travelType);
+					paymenttextField_5.setText(prof.paymentType);
+					mdcontacttextField_5.setText(prof.mdContact);
+					mdphonetextField_5.setText(prof.mdPhone);
+					illnesstextField_5.setText(prof.illness);
+					allergytextField_5.setText(prof.allergy);
+					break;
+				
+				}
+				
+				idx++;
+			}
+		
+		
 		
 	}
+	
 }
