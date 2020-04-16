@@ -106,10 +106,14 @@ public class MainMenu extends JFrame {
 					profile.setVisible(true);
 				}
 				else if(rdbtnNewRadioButton_1.isSelected()) {
-					JOptionPane.showMessageDialog(null, "Delete Profile");
+					//JOptionPane.showMessageDialog(null, "Delete Profile");
+					DeleteProfile profile = new DeleteProfile();
+					profile.setVisible(true);
 				}
 				else if(rdbtnNewRadioButton_2.isSelected()) {
-					JOptionPane.showMessageDialog(null, "Update Profile");
+					//JOptionPane.showMessageDialog(null, "Update Profile");
+					UpdateProfile design = new UpdateProfile();
+					design.setVisible(true);
 				}
 				else if(rdbtnNewRadioButton_3.isSelected()) {
 					FindProfile profile = new FindProfile();

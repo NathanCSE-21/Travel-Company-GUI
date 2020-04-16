@@ -114,7 +114,7 @@ public class DisplayProfilesDesign extends JFrame {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 241, 69, 296);
 		contentPane.add(panel_1);
-		panel_1.setBackground(new Color(27,38,44));
+		panel_1.setBackground(new Color(252,248,243));
 		
 		JLabel lblNewLabel = new JLabel("Profiles Database");
 		lblNewLabel.setForeground(Color.WHITE);
