@@ -336,6 +336,8 @@ public class CreateProfile extends JFrame {
 		            oos.close();
 		            fos.close();
 		            
+		            
+		            JOptionPane.showMessageDialog(null, "Profile Added");
 		        } 
 		        catch (IOException ioe) 
 		        {

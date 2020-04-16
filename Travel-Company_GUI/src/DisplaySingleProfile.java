@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.util.ArrayList;
 
@@ -179,9 +181,10 @@ public class DisplaySingleProfile extends JFrame {
 		contentPane.add(allergytextField);
 		allergytextField.setColumns(10);
 		
-		
+		boolean found = false;
 		for(NewProfile prof: newprofile) {
 			if(prof.lastName.equals(lastname)) {
+				found = true;
 				// Set text for the corresponding field.
 				firsttextField.setText(prof.firstName);
 				lasttextField.setText(prof.lastName);
@@ -196,6 +199,9 @@ public class DisplaySingleProfile extends JFrame {
 			}
 		}
 		
+		if(!found) {
+			JOptionPane.showMessageDialog(null, "Profile Not Found!");
+		}
 		
 	}
 }
